@@ -1,20 +1,27 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import MetaData
-from sqlalchemy_serializer import SerializerMixin
 
-metadata = MetaData(naming_convention={
-    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-})
+db = SQLAlchemy()
 
-db = SQLAlchemy(metadata=metadata)
-
-class Bakery(db.Model, SerializerMixin):
-    __tablename__ = 'bakeries'
-
+class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    author = db.Column(db.String(255), nullable=False)
 
-class BakedGood(db.Model, SerializerMixin):
-    __tablename__ = 'baked_goods'
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'author': self.author
+        }
 
+class Team(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    
+    name = db.Column(db.String(255), nullable=False)
+    player = db.Column(db.String(255), nullable=False)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'player': self.player
+        }
